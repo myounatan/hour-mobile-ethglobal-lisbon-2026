@@ -1,4 +1,6 @@
+export { PunchCameraModal } from './PunchCameraModal';
 export { PunchSlot } from './PunchSlot';
+export { QrRedemptionScanModal } from './QrRedemptionScanModal';
 export { RewardHistoryList } from './RewardHistoryList';
 export { RewardPreviewRow } from './RewardPreviewRow';
 export { RewardPunchCard } from './RewardPunchCard';
@@ -14,6 +16,8 @@ export {
 export { isReadyToRedeem } from './types';
 export type {
   PunchCardSummary,
+  PunchVerificationResult,
+  QrRedemptionVerificationResult,
   RewardHistoryEvent,
   RewardHistoryEventType,
 } from './types';

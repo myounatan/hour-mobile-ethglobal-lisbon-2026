@@ -17,6 +17,7 @@
     "check-types": "tsc --noEmit --pretty"
   },
   "peerDependencies": {
+    "expo-camera": ">=17.0.0",
     "lucide-react-native": ">=0.400.0",
     "react": ">=18.2.0",
     "react-native": ">=0.74.0",
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "@types/react": "~19.1.10",
+    "expo-camera": "~17.0.10",
     "lucide-react-native": "^0.544.0",
     "react": "19.1.0",
     "react-native": "0.81.4",

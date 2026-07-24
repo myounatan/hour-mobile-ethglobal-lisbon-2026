@@ -18,3 +18,13 @@ export type RewardHistoryEvent = {
 export function isReadyToRedeem(summary: PunchCardSummary): boolean {
   return summary.punchesEarned >= summary.punchesRequired;
 }
+
+/** Outcome of running a captured punch photo through the verification pipeline. */
+export type PunchVerificationResult =
+  | { approved: true }
+  | { approved: false; reason: string };
+
+/** Outcome of running a scanned redemption QR code through the verification pipeline. */
+export type QrRedemptionVerificationResult =
+  | { approved: true }
+  | { approved: false; reason: string };

@@ -6,6 +6,7 @@
 export const REWARD_COLORS = {
   navy: '#272838',
   pink: '#E16F7C',
+  danger: '#E2574C',
   label2: 'rgba(39,40,56,1)',
   label3: 'rgba(79,80,96,1)',
   label4: 'rgba(240,240,240,1)',
