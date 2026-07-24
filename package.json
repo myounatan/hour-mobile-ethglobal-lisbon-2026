@@ -1,0 +1,35 @@
+{
+  "name": "hour-rewards-ui",
+  "version": "0.1.0",
+  "description": "React Native punch-card rewards components for venue loyalty programs",
+  "license": "MIT",
+  "author": "Matthew Younatan",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/myounatan/hour-mobile-ethglobal-lisbon-2026.git"
+  },
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "check-types": "tsc --noEmit --pretty"
+  },
+  "peerDependencies": {
+    "lucide-react-native": ">=0.400.0",
+    "react": ">=18.2.0",
+    "react-native": ">=0.74.0",
+    "react-native-reanimated": ">=3.10.0",
+    "react-native-svg": ">=15.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "~19.1.10",
+    "lucide-react-native": "^0.544.0",
+    "react": "19.1.0",
+    "react-native": "0.81.4",
+    "react-native-reanimated": "~4.1.1",
+    "react-native-svg": "15.12.1",
+    "typescript": "^5.1.6"
+  }
+}
