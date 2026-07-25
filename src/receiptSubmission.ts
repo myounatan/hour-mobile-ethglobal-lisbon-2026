@@ -45,7 +45,7 @@ const REFUSAL_COPY: Record<string, string> = {
   not_a_receipt:
     'That does not look like a receipt. Photograph the receipt itself, bill total and all.',
   venue_mismatch:
-    'That receipt is from somewhere else, so it cannot earn a star here.',
+    "We could not find this venue's name on that receipt. Make sure the top of the receipt, name and all, is in frame.",
   no_total:
     'We could not find a total. Make sure the bottom of the receipt is in frame.',
   no_date: 'We could not find a date. Make sure the top of the receipt is in frame.',
