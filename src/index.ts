@@ -5,6 +5,7 @@ export { RewardHistoryList } from './RewardHistoryList';
 export { RewardPreviewRow } from './RewardPreviewRow';
 export { RewardPunchCard } from './RewardPunchCard';
 export { RewardReadyBanner } from './RewardReadyBanner';
+export { RewardsFilterChip } from './RewardsFilterChip';
 export {
   accentAlpha,
   onCard,
