@@ -3,7 +3,7 @@
 React Native components for punch-card loyalty rewards: a stampable card, the animations
 that make earning a punch feel like something, and the pieces around it.
 
-Built for ETHGlobal Lisbon 2026, and used by the [Hour](https://hourapp.co) app to show a
+Built for ETHGlobal Lisbon 2026, and used by the [Hour](https://get-hour.com) app to show a
 venue's rewards program.
 
 ## Install
