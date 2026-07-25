@@ -13,7 +13,8 @@ yarn add hour-rewards-ui
 ```
 
 Peer dependencies (all already present in a typical Expo app):
-`react-native-reanimated`, `react-native-svg`, `lucide-react-native`.
+`react-native-reanimated`, `react-native-svg`, `lucide-react-native`, `expo-camera` (the
+capture and scan flows), and `react-native-qrcode-svg` (drawing a redemption code).
 
 The package ships TypeScript source rather than a build, so it goes through your app's
 Babel/Metro pipeline like the rest of your code. Consuming it from a git submodule works
@@ -99,6 +100,46 @@ back to your screen or explaining the refusal with a retry.
 `PunchVerificationResult`. Anything it throws is shown as a connection problem, so let network
 errors through rather than swallowing them.
 
+### `RewardQrCodeModal`
+
+The customer's side of a redemption, full screen: asks for a code, draws it, counts down what is
+left of it, and offers a fresh one when it runs out.
+
+```tsx
+<RewardQrCodeModal
+  visible={isQrCodeOpen}
+  onRequestClose={() => setIsQrCodeOpen(false)}
+  rewardDescription={summary.rewardDescription}
+  requestCode={() => rewardsApi.createRedemptionCode(venueId)}
+/>
+```
+
+`requestCode` is the seam, called on open and again on expiry. The QR is drawn on the device — a
+live token has no business travelling to a third-party generator, and a code that needs a network
+to be *shown* is a code that fails at the till.
+
+Nothing here knows the code was scanned: that happens on the venue's phone. Poll your summary
+while the modal is open and close it when the card is no longer full.
+
+### `QrRedemptionScanModal`
+
+The venue's side, full screen: scan a customer's code, submit it, then show whether it was
+honoured and what to hand over.
+
+```tsx
+<QrRedemptionScanModal
+  visible={isScannerOpen}
+  onRequestClose={() => setIsScannerOpen(false)}
+  expectedVenueId={venueId}
+  verifyRedemptionQr={verifyRedemptionQr}
+  onRedeemed={refreshVenue}
+/>
+```
+
+`expectedVenueId` is the venue whose staff are holding the phone. A code for anywhere else — and
+anything that was never one of our codes — is refused here without a round trip, because both are
+legible from the payload itself. Everything else is the server's call.
+
 ## Submitting a receipt
 
 Your app owns its API client — base URL, auth, refresh, timeouts — so the request itself stays
@@ -122,6 +163,46 @@ const verifyPunchPhoto = async (photoUri: string) =>
 [`hour-rewards-sdk`](https://github.com/myounatan/hour-backend-ethglobal-lisbon-2026) answers
 with, including the attestation of the 0G run that judged the receipt (`zg_request_id`,
 `zg_tee_verified`) and where the punch landed on the venue's Hedera topic.
+
+## Redeeming a code
+
+Same split: the requests are yours, the formats and the wording are here.
+
+```ts
+import {
+  redemptionCodeFromResponse,
+  redemptionResultFromVerdict,
+  redemptionScanBody,
+  type RedemptionCodeResponse,
+  type RedemptionScanVerdict,
+} from 'hour-rewards-ui';
+
+// Customer: ask for a code to show.
+const createRedemptionCode = async (venueId: string) =>
+  redemptionCodeFromResponse(
+    await api.post<RedemptionCodeResponse>(
+      `/api/rewards/venues/${venueId}/redemption-codes`,
+    ),
+  );
+
+// Venue: submit what the camera read, exactly as read.
+const verifyRedemptionQr = async (qrData: string) =>
+  redemptionResultFromVerdict(
+    await api.post<RedemptionScanVerdict>(
+      `/api/rewards/venues/${venueId}/redemption-scans`,
+      redemptionScanBody(qrData),
+    ),
+  );
+```
+
+The deadline a code counts down to is derived from the duration the server sends rather than its
+`expires_at` timestamp, since that timestamp is naive UTC — a duration is unambiguous, and a
+countdown runs against the device's clock either way.
+
+`parseRedemptionPayload` reads the payload format written by `hour_rewards.redemption` in the SDK,
+and is what lets a scanner turn away another venue's code on the spot. Reading it is a
+convenience, never an authority: the server checks the same claims again before honouring
+anything.
 
 ## Types
 

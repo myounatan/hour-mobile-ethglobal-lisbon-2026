@@ -6,6 +6,8 @@
 export const REWARD_COLORS = {
   navy: '#272838',
   pink: '#E16F7C',
+  gold: '#D4AF37',
+  success: '#3DAA6D',
   danger: '#E2574C',
   label2: 'rgba(39,40,56,1)',
   label3: 'rgba(79,80,96,1)',
@@ -25,7 +27,7 @@ export const S = {
 
 /** Dark "physical card" surface the punch grid sits on. */
 export const PUNCH_CARD_SURFACE = REWARD_COLORS.navy;
-export const PUNCH_CARD_ACCENT = REWARD_COLORS.pink;
+export const PUNCH_CARD_ACCENT = REWARD_COLORS.gold;
 
 /** Text/borders drawn on top of the dark surface. */
 export function onCard(alpha: number): string {
@@ -33,5 +35,5 @@ export function onCard(alpha: number): string {
 }
 
 export function accentAlpha(alpha: number): string {
-  return `rgba(225,111,124,${alpha})`;
+  return `rgba(212,175,55,${alpha})`;
 }

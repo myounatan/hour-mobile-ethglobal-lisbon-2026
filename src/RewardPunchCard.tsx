@@ -75,62 +75,64 @@ export function RewardPunchCard({
 
   return (
     <Animated.View style={[styles.card, popStyle]}>
-      <View style={styles.sheen} pointerEvents="none" />
-
-      <View style={styles.head}>
-        <View style={styles.identity}>
-          <View style={styles.badge}>
-            <Gift size={20} color={PUNCH_CARD_SURFACE} strokeWidth={2} />
+      <View style={styles.header}>
+        <View style={styles.head}>
+          <View style={styles.identity}>
+            <View style={styles.badge}>
+              <Gift size={20} color={PUNCH_CARD_SURFACE} strokeWidth={2} />
+            </View>
+            <View style={styles.identityText}>
+              <Text style={styles.venueName} numberOfLines={1}>
+                {venueName}
+              </Text>
+              {venueAddress ? (
+                <View style={styles.addressRow}>
+                  <MapPin size={12} color={onCard(0.6)} />
+                  <Text style={styles.address} numberOfLines={1}>
+                    {venueAddress}
+                  </Text>
+                </View>
+              ) : null}
+            </View>
           </View>
-          <View style={styles.identityText}>
-            <Text style={styles.venueName} numberOfLines={1}>
-              {venueName}
+          <View style={styles.memberPill}>
+            <Text style={styles.memberPillText}>Member</Text>
+          </View>
+        </View>
+
+        <Text style={styles.tagline}>{rewardDescription}</Text>
+      </View>
+
+      <View style={styles.body}>
+        <View style={styles.grid} onLayout={onGridLayout}>
+          {slotSize > 0 &&
+            Array.from({ length: punchesRequired }).map((_, index) => (
+              <PunchSlot
+                // eslint-disable-next-line react/no-array-index-key -- slots are a fixed positional sequence
+                key={index}
+                index={index}
+                size={slotSize}
+                punched={index < punchesEarned}
+                justPunched={justPunchedIndex === index && index < punchesEarned}
+                reduceMotion={reduceMotion}
+              />
+            ))}
+        </View>
+
+        <View style={styles.progressBlock}>
+          <View style={styles.progressLabels}>
+            <Text style={styles.progressPrimary}>
+              {complete
+                ? 'Reward ready'
+                : `${punchesEarned} of ${punchesRequired} stars`}
             </Text>
-            {venueAddress ? (
-              <View style={styles.addressRow}>
-                <MapPin size={12} color={onCard(0.6)} />
-                <Text style={styles.address} numberOfLines={1}>
-                  {venueAddress}
-                </Text>
-              </View>
-            ) : null}
+            <Text style={styles.progressSecondary}>
+              {complete ? 'Ready to redeem' : `${remaining} to go`}
+            </Text>
           </View>
-        </View>
-        <View style={styles.memberPill}>
-          <Text style={styles.memberPillText}>Member</Text>
-        </View>
-      </View>
-
-      <Text style={styles.tagline}>{rewardDescription}</Text>
-
-      <View style={styles.grid} onLayout={onGridLayout}>
-        {slotSize > 0 &&
-          Array.from({ length: punchesRequired }).map((_, index) => (
-            <PunchSlot
-              // eslint-disable-next-line react/no-array-index-key -- slots are a fixed positional sequence
-              key={index}
-              index={index}
-              size={slotSize}
-              punched={index < punchesEarned}
-              justPunched={justPunchedIndex === index && index < punchesEarned}
-              reduceMotion={reduceMotion}
-            />
-          ))}
-      </View>
-
-      <View style={styles.progressBlock}>
-        <View style={styles.progressLabels}>
-          <Text style={styles.progressPrimary}>
-            {complete
-              ? 'Reward ready'
-              : `${punchesEarned} of ${punchesRequired} punches`}
-          </Text>
-          <Text style={styles.progressSecondary}>
-            {complete ? 'Ready to redeem' : `${remaining} to go`}
-          </Text>
-        </View>
-        <View style={styles.progressTrack}>
-          <Animated.View style={[styles.progressFill, progressFillStyle]} />
+          <View style={styles.progressTrack}>
+            <Animated.View style={[styles.progressFill, progressFillStyle]} />
+          </View>
         </View>
       </View>
     </Animated.View>
@@ -141,7 +143,6 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: PUNCH_CARD_SURFACE,
     borderRadius: 28,
-    padding: S.xl,
     overflow: 'hidden',
     shadowColor: PUNCH_CARD_SURFACE,
     shadowOffset: { width: 0, height: 12 },
@@ -149,13 +150,16 @@ const styles = StyleSheet.create({
     shadowRadius: 24,
     elevation: 6,
   },
-  sheen: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 96,
+  header: {
+    paddingHorizontal: S.xl,
+    paddingTop: S.xl,
+    paddingBottom: S.lg,
     backgroundColor: onCard(0.06),
+  },
+  body: {
+    paddingHorizontal: S.xl,
+    paddingTop: S.lg,
+    paddingBottom: S.xl,
   },
   head: {
     flexDirection: 'row',
@@ -216,7 +220,6 @@ const styles = StyleSheet.create({
     color: onCard(0.75),
   },
   grid: {
-    marginTop: S.lg,
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: SLOT_GAP,

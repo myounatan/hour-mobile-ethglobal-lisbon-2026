@@ -2,7 +2,7 @@ import { Gift } from 'lucide-react-native';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
-import { accentAlpha, REWARD_COLORS, S } from './theme';
+import { accentAlpha, PUNCH_CARD_ACCENT, REWARD_COLORS, S } from './theme';
 import { useRewardPop } from './useRewardPop';
 
 type RewardReadyBannerProps = {
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: REWARD_COLORS.pink,
+    backgroundColor: PUNCH_CARD_ACCENT,
   },
   text: {
     flex: 1,

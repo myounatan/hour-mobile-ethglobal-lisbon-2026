@@ -2,9 +2,13 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { X } from 'lucide-react-native';
 import { useRef } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CameraPermissionGate } from './CameraPermissionGate';
 import { onCard, PUNCH_CARD_ACCENT, PUNCH_CARD_SURFACE, S } from './theme';
+
+/** Vertical space reserved for hint + close button so the frame clears the controls. */
+const FOOTER_CONTENT_HEIGHT = 120;
 
 type QrScannerViewProps = {
   onScanned: (data: string) => void;
@@ -13,6 +17,7 @@ type QrScannerViewProps = {
 
 /** Full-screen viewfinder that continuously scans for a QR code. */
 export function QrScannerView({ onScanned, onClose }: QrScannerViewProps) {
+  const insets = useSafeAreaInsets();
   const [permission, requestPermission] = useCameraPermissions();
   // Guards against the scanner firing repeatedly for the same code while the
   // parent is still transitioning away from this view.
@@ -43,21 +48,36 @@ export function QrScannerView({ onScanned, onClose }: QrScannerViewProps) {
         barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
         onBarcodeScanned={handleBarcodeScanned}
       />
-      <View style={styles.frame} pointerEvents="none" />
+      <View
+        style={[
+          styles.frame,
+          {
+            top: insets.top + S.xxl,
+            bottom: insets.bottom + FOOTER_CONTENT_HEIGHT,
+            left: S.xxl,
+            right: S.xxl,
+          },
+        ]}
+        pointerEvents="none"
+      />
 
-      <TouchableOpacity
-        style={styles.closeButton}
-        onPress={onClose}
-        activeOpacity={0.8}
-        hitSlop={8}
+      <View
+        style={[
+          styles.footer,
+          { paddingBottom: Math.max(insets.bottom, S.sm) + S.xxl },
+        ]}
       >
-        <X size={20} color="#fff" />
-      </TouchableOpacity>
-
-      <View style={styles.footer}>
         <Text style={styles.hint}>
           Point the camera at the customer's redemption code
         </Text>
+        <TouchableOpacity
+          style={styles.closeButton}
+          onPress={onClose}
+          activeOpacity={0.8}
+          hitSlop={8}
+        >
+          <X size={20} color="#fff" />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -72,22 +92,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   frame: {
-    ...StyleSheet.absoluteFillObject,
-    margin: S.xxl,
+    position: 'absolute',
     borderRadius: 20,
     borderWidth: 2,
     borderColor: PUNCH_CARD_ACCENT,
-  },
-  closeButton: {
-    position: 'absolute',
-    top: S.xl,
-    right: S.lg,
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.4)',
   },
   footer: {
     position: 'absolute',
@@ -97,7 +105,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: S.lg,
     paddingHorizontal: S.xl,
-    paddingBottom: S.xxl,
     paddingTop: S.xl,
   },
   hint: {
@@ -105,5 +112,13 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
     color: onCard(0.85),
+  },
+  closeButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
 });

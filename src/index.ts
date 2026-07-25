@@ -9,9 +9,26 @@ export type {
   ReceiptVerdict,
   ReceiptVerdictSummary,
 } from './receiptSubmission';
+export {
+  isForVenue,
+  parseRedemptionPayload,
+  REDEMPTION_PAYLOAD_VERSION,
+  redemptionCodeFromResponse,
+  redemptionRefusalCopy,
+  redemptionResultFromVerdict,
+  redemptionScanBody,
+} from './redemption';
+export type {
+  RedemptionCode,
+  RedemptionCodeResponse,
+  RedemptionCodeStatus,
+  RedemptionScanVerdict,
+  ScannedRedemption,
+} from './redemption';
 export { RewardHistoryList } from './RewardHistoryList';
 export { RewardPreviewRow } from './RewardPreviewRow';
 export { RewardPunchCard } from './RewardPunchCard';
+export { RewardQrCodeModal } from './RewardQrCodeModal';
 export { RewardReadyBanner } from './RewardReadyBanner';
 export { RewardsFilterChip } from './RewardsFilterChip';
 export {
@@ -30,4 +47,5 @@ export type {
   RewardHistoryEvent,
   RewardHistoryEventType,
 } from './types';
+export { useCountdown } from './useCountdown';
 export { useRewardPop } from './useRewardPop';

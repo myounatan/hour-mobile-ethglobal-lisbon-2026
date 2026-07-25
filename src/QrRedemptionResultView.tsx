@@ -6,6 +6,8 @@ import { onCard, PUNCH_CARD_SURFACE, REWARD_COLORS, S } from './theme';
 type QrRedemptionResultViewProps = {
   outcome: 'approved' | 'rejected';
   message: string;
+  /** What the venue now owes the customer, shown on approval. */
+  rewardDescription?: string;
   onScanAnother: () => void;
   onDone: () => void;
 };
@@ -14,6 +16,7 @@ type QrRedemptionResultViewProps = {
 export function QrRedemptionResultView({
   outcome,
   message,
+  rewardDescription,
   onScanAnother,
   onDone,
 }: QrRedemptionResultViewProps) {
@@ -31,10 +34,19 @@ export function QrRedemptionResultView({
       <Text style={styles.title}>
         {approved ? 'Reward redeemed' : 'Could not redeem'}
       </Text>
+      {approved && rewardDescription ? (
+        <View style={styles.reward}>
+          <Text style={styles.rewardLabel}>Give them</Text>
+          <Text style={styles.rewardValue}>{rewardDescription}</Text>
+        </View>
+      ) : null}
       <Text style={styles.message}>{message}</Text>
 
       <TouchableOpacity
-        style={styles.primaryButton}
+        style={[
+          styles.primaryButton,
+          approved ? styles.primaryApproved : styles.primaryRejected,
+        ]}
         onPress={onScanAnother}
         activeOpacity={0.85}
       >
@@ -65,7 +77,7 @@ const styles = StyleSheet.create({
     marginBottom: S.xs,
   },
   iconApproved: {
-    backgroundColor: REWARD_COLORS.pink,
+    backgroundColor: REWARD_COLORS.success,
   },
   iconRejected: {
     backgroundColor: REWARD_COLORS.danger,
@@ -76,8 +88,30 @@ const styles = StyleSheet.create({
     color: onCard(1),
     textAlign: 'center',
   },
+  reward: {
+    alignItems: 'center',
+    gap: S.xxs,
+    marginTop: S.md,
+    paddingVertical: S.sm,
+    paddingHorizontal: S.lg,
+    borderRadius: 16,
+    backgroundColor: onCard(0.1),
+  },
+  rewardLabel: {
+    fontSize: 11,
+    fontWeight: '600',
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
+    color: onCard(0.55),
+  },
+  rewardValue: {
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
+    color: onCard(1),
+  },
   message: {
-    marginTop: S.xxs,
+    marginTop: S.sm,
     fontSize: 14,
     lineHeight: 20,
     textAlign: 'center',
@@ -90,7 +124,12 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: REWARD_COLORS.pink,
+  },
+  primaryApproved: {
+    backgroundColor: REWARD_COLORS.success,
+  },
+  primaryRejected: {
+    backgroundColor: REWARD_COLORS.danger,
   },
   primaryLabel: {
     fontSize: 15,

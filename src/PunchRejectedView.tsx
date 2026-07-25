@@ -1,12 +1,20 @@
 import { AlertTriangle } from 'lucide-react-native';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { onCard, PUNCH_CARD_SURFACE, REWARD_COLORS, S } from './theme';
+import {
+  onCard,
+  PUNCH_CARD_ACCENT,
+  PUNCH_CARD_SURFACE,
+  REWARD_COLORS,
+  S,
+} from './theme';
 
 type PunchRejectedViewProps = {
   reason: string;
   onRetry: () => void;
   onClose: () => void;
+  title?: string;
+  retryLabel?: string;
 };
 
 /** Shown when the verification pipeline declines the captured photo. */
@@ -14,13 +22,15 @@ export function PunchRejectedView({
   reason,
   onRetry,
   onClose,
+  title = 'Please try again later',
+  retryLabel = 'Retake photo',
 }: PunchRejectedViewProps) {
   return (
     <View style={styles.root}>
       <View style={styles.icon}>
         <AlertTriangle size={26} color="#fff" />
       </View>
-      <Text style={styles.title}>Please try again later</Text>
+      <Text style={styles.title}>{title}</Text>
       <Text style={styles.reason}>{reason}</Text>
 
       <TouchableOpacity
@@ -28,7 +38,7 @@ export function PunchRejectedView({
         onPress={onRetry}
         activeOpacity={0.85}
       >
-        <Text style={styles.retryLabel}>Retake photo</Text>
+        <Text style={styles.retryLabel}>{retryLabel}</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={onClose}>
         <Text style={styles.closeLabel}>Close</Text>
@@ -75,7 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: REWARD_COLORS.pink,
+    backgroundColor: PUNCH_CARD_ACCENT,
   },
   retryLabel: {
     fontSize: 15,

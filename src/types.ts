@@ -24,7 +24,7 @@ export type PunchVerificationResult =
   | { approved: true }
   | { approved: false; reason: string };
 
-/** Outcome of running a scanned redemption QR code through the verification pipeline. */
+/** Outcome of submitting a scanned redemption QR code. */
 export type QrRedemptionVerificationResult =
-  | { approved: true }
+  | { approved: true; rewardDescription?: string }
   | { approved: false; reason: string };

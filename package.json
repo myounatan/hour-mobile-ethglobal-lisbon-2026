@@ -21,7 +21,9 @@
     "lucide-react-native": ">=0.400.0",
     "react": ">=18.2.0",
     "react-native": ">=0.74.0",
+    "react-native-qrcode-svg": ">=6.3.0",
     "react-native-reanimated": ">=3.10.0",
+    "react-native-safe-area-context": ">=4.0.0",
     "react-native-svg": ">=15.0.0"
   },
   "devDependencies": {
@@ -30,7 +32,9 @@
     "lucide-react-native": "^0.544.0",
     "react": "19.1.0",
     "react-native": "0.81.4",
+    "react-native-qrcode-svg": "^6.3.15",
     "react-native-reanimated": "~4.1.1",
+    "react-native-safe-area-context": "~5.6.0",
     "react-native-svg": "15.12.1",
     "typescript": "^5.1.6"
   }

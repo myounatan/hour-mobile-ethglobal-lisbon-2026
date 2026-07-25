@@ -45,13 +45,13 @@ const REFUSAL_COPY: Record<string, string> = {
   not_a_receipt:
     'That does not look like a receipt. Photograph the receipt itself, bill total and all.',
   venue_mismatch:
-    'That receipt is from somewhere else, so it cannot earn a punch here.',
+    'That receipt is from somewhere else, so it cannot earn a star here.',
   no_total:
     'We could not find a total. Make sure the bottom of the receipt is in frame.',
   no_date: 'We could not find a date. Make sure the top of the receipt is in frame.',
   illegible:
     'That photo was too hard to read. Try again in better light, holding still.',
-  duplicate_receipt: 'That receipt has already earned a punch here.',
+  duplicate_receipt: 'That receipt has already earned a star here.',
   low_confidence: GENERIC_REFUSAL,
   verifier_unavailable:
     'Receipt checks are unavailable right now. Please try again in a moment.',

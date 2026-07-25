@@ -32,11 +32,15 @@ function HistoryRow({
         {isRedeem ? (
           <Gift size={14} color="#fff" />
         ) : (
-          <Star size={14} color={REWARD_COLORS.pink} fill={REWARD_COLORS.pink} />
+          <Star
+            size={14}
+            color={REWARD_COLORS.gold}
+            fill={REWARD_COLORS.gold}
+          />
         )}
       </View>
       <Text style={styles.label}>
-        {isRedeem ? 'Redeem event' : 'Punch card event'}
+        {isRedeem ? 'Redeem event' : 'Star earned'}
       </Text>
       <Text style={styles.date}>{formatEventDate(event.occurredAt)}</Text>
     </View>
@@ -87,7 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: accentAlpha(0.12),
   },
   iconRedeem: {
-    backgroundColor: REWARD_COLORS.pink,
+    backgroundColor: REWARD_COLORS.success,
   },
   label: {
     flex: 1,

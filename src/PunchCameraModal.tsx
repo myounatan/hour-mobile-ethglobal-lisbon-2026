@@ -27,9 +27,9 @@ type PunchCameraModalProps = {
 };
 
 /**
- * Full-screen flow started from the "Add a punch" button: capture a photo of
- * the receipt, submit it for verification, then either hand control back to
- * the host screen (approved) or explain why the punch didn't go through.
+ * Full-screen flow started from the "Scan receipt for a star" button: capture a
+ * photo of the receipt, submit it for verification, then either hand control
+ * back to the host screen (approved) or explain why the star didn't go through.
  */
 export function PunchCameraModal({
   visible,
