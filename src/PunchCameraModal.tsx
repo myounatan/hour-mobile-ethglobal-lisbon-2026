@@ -5,9 +5,17 @@ import { CameraCaptureView } from './CameraCaptureView';
 import { PunchRejectedView } from './PunchRejectedView';
 import { PUNCH_CARD_SURFACE } from './theme';
 import { VerificationProcessingView } from './VerificationProcessingView';
+import type { ProgressStage } from './useStagedProgress';
 import type { PunchVerificationResult } from './types';
 
 type Stage = 'capture' | 'processing' | 'rejected';
+
+/** Roughly what a verification spends its time on: upload, then OCR, then the verdict. */
+const PROCESSING_STAGES: ProgressStage[] = [
+  { label: 'Uploading your photo…', durationMs: 3000 },
+  { label: 'Reading the receipt…', durationMs: 7000 },
+  { label: 'Verifying it…', durationMs: 8000 },
+];
 
 type PunchCameraModalProps = {
   visible: boolean;
@@ -76,7 +84,9 @@ export function PunchCameraModal({
         {stage === 'capture' && (
           <CameraCaptureView onCapture={handleCapture} onClose={handleClose} />
         )}
-        {stage === 'processing' && <VerificationProcessingView />}
+        {stage === 'processing' && (
+          <VerificationProcessingView stages={PROCESSING_STAGES} />
+        )}
         {stage === 'rejected' && (
           <PunchRejectedView
             reason={rejectionReason}

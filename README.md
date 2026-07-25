@@ -80,6 +80,49 @@ same reason.
 <RewardHistoryList events={history} emptyLabel="No activity yet" />
 ```
 
+### `PunchCameraModal`
+
+The whole earn-a-punch flow, full screen: viewfinder and shutter, a progress bar that walks
+through uploading, reading and verifying while the request is out, then either handing control
+back to your screen or explaining the refusal with a retry.
+
+```tsx
+<PunchCameraModal
+  visible={isCameraOpen}
+  onRequestClose={() => setIsCameraOpen(false)}
+  onApproved={addPunch}
+  verifyPunch={verifyPunchPhoto}
+/>
+```
+
+`verifyPunch` is the seam: it takes the captured photo's URI and resolves with a
+`PunchVerificationResult`. Anything it throws is shown as a connection problem, so let network
+errors through rather than swallowing them.
+
+## Submitting a receipt
+
+Your app owns its API client — base URL, auth, refresh, timeouts — so the request itself stays
+yours. Either side of it is here: the multipart body the endpoint expects, and the verdict
+mapped into what the modal shows, refusal codes turned into words a customer can act on.
+
+```ts
+import { punchResultFromVerdict, receiptPhotoFormData, type ReceiptVerdict } from 'hour-rewards-ui';
+
+const verifyPunchPhoto = async (photoUri: string) =>
+  punchResultFromVerdict(
+    await api.postForm<ReceiptVerdict>(
+      `/api/rewards/venues/${venueId}/receipts`,
+      receiptPhotoFormData(photoUri),
+      60_000, // OCR plus inference: well past a normal request timeout
+    ),
+  );
+```
+
+`ReceiptVerdict` mirrors what the companion
+[`hour-rewards-sdk`](https://github.com/myounatan/hour-backend-ethglobal-lisbon-2026) answers
+with, including the attestation of the 0G run that judged the receipt (`zg_request_id`,
+`zg_tee_verified`) and where the punch landed on the venue's Hedera topic.
+
 ## Types
 
 `PunchCardSummary` and `RewardHistoryEvent` describe the shapes the components consume,

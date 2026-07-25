@@ -1,6 +1,14 @@
 export { PunchCameraModal } from './PunchCameraModal';
 export { PunchSlot } from './PunchSlot';
 export { QrRedemptionScanModal } from './QrRedemptionScanModal';
+export {
+  punchResultFromVerdict,
+  receiptPhotoFormData,
+} from './receiptSubmission';
+export type {
+  ReceiptVerdict,
+  ReceiptVerdictSummary,
+} from './receiptSubmission';
 export { RewardHistoryList } from './RewardHistoryList';
 export { RewardPreviewRow } from './RewardPreviewRow';
 export { RewardPunchCard } from './RewardPunchCard';
