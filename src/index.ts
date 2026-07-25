@@ -26,6 +26,7 @@ export type {
   ScannedRedemption,
 } from './redemption';
 export { RewardHistoryList } from './RewardHistoryList';
+export { RewardProofModal } from './RewardProofModal';
 export { RewardPreviewRow } from './RewardPreviewRow';
 export { RewardPunchCard } from './RewardPunchCard';
 export { RewardQrCodeModal } from './RewardQrCodeModal';
@@ -40,6 +41,13 @@ export {
   S as REWARD_SPACING,
 } from './theme';
 export { isReadyToRedeem } from './types';
+export {
+  isRewardProof,
+  PROOF_EVENT_LABELS,
+  PROOF_STATUS_LABELS,
+  rewardProofFromInput,
+  rewardProofFromResponse,
+} from './proof';
 export type {
   PunchCardSummary,
   PunchVerificationResult,
@@ -47,5 +55,14 @@ export type {
   RewardHistoryEvent,
   RewardHistoryEventType,
 } from './types';
+export type {
+  HederaProofResponse,
+  ReceiptProofResponse,
+  RedemptionProofResponse,
+  RewardProof,
+  RewardProofInput,
+  RewardProofResponse,
+  ZgProofResponse,
+} from './proof';
 export { useCountdown } from './useCountdown';
 export { useRewardPop } from './useRewardPop';

@@ -1,12 +1,20 @@
-import { Gift, Star } from 'lucide-react-native';
-import { StyleSheet, Text, View } from 'react-native';
+import { ChevronRight, Gift, Star } from 'lucide-react-native';
+import { useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { RewardProofModal } from './RewardProofModal';
 import { accentAlpha, REWARD_COLORS, S } from './theme';
 import type { RewardHistoryEvent } from './types';
+import type { RewardProofInput } from './proof';
 
 type RewardHistoryListProps = {
   events: RewardHistoryEvent[];
   emptyLabel?: string;
+  /**
+   * Enables proof details for each event. The host supplies the request because it owns API
+   * authentication and transport.
+   */
+  fetchProof?: (eventId: string) => Promise<RewardProofInput>;
 };
 
 function formatEventDate(occurredAt: string): string {
@@ -20,14 +28,16 @@ function formatEventDate(occurredAt: string): string {
 function HistoryRow({
   event,
   isLast,
+  onPress,
 }: {
   event: RewardHistoryEvent;
   isLast: boolean;
+  onPress?: () => void;
 }) {
   const isRedeem = event.type === 'redeem';
 
-  return (
-    <View style={[styles.row, isLast && styles.rowLast]}>
+  const content = (
+    <>
       <View style={[styles.icon, isRedeem && styles.iconRedeem]}>
         {isRedeem ? (
           <Gift size={14} color="#fff" />
@@ -43,7 +53,20 @@ function HistoryRow({
         {isRedeem ? 'Redeem event' : 'Star earned'}
       </Text>
       <Text style={styles.date}>{formatEventDate(event.occurredAt)}</Text>
-    </View>
+      {onPress ? <ChevronRight size={17} color={REWARD_COLORS.label3} /> : null}
+    </>
+  );
+
+  return (
+    <Pressable
+      style={[styles.row, isLast && styles.rowLast]}
+      onPress={onPress}
+      disabled={!onPress}
+      accessibilityRole={onPress ? 'button' : undefined}
+      accessibilityHint={onPress ? 'View proof details' : undefined}
+    >
+      {content}
+    </Pressable>
   );
 }
 
@@ -51,7 +74,10 @@ function HistoryRow({
 export function RewardHistoryList({
   events,
   emptyLabel = 'No activity yet',
+  fetchProof,
 }: RewardHistoryListProps) {
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+
   if (events.length === 0) {
     return <Text style={styles.empty}>{emptyLabel}</Text>;
   }
@@ -63,8 +89,17 @@ export function RewardHistoryList({
           key={event.id}
           event={event}
           isLast={index === events.length - 1}
+          onPress={fetchProof ? () => setSelectedEventId(event.id) : undefined}
         />
       ))}
+      {fetchProof ? (
+        <RewardProofModal
+          visible={selectedEventId != null}
+          eventId={selectedEventId}
+          fetchProof={fetchProof}
+          onRequestClose={() => setSelectedEventId(null)}
+        />
+      ) : null}
     </>
   );
 }
